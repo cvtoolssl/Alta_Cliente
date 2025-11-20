@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de Nuevo Cliente - CV Tools</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Librerías para generar PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <!-- Logo oculto para usarlo en el PDF -->
+    <img id="logo-for-pdf" src="img/cvtools.png" alt="Logo" style="display: none;">
+
+    <div class="container">
+        <header>
+            <img src="img/cvtools.png" alt="CV Tools Logo" class="main-logo">
+            <h1>Alta de Nuevo Cliente</h1>
+            <p>Por favor, complete el siguiente formulario para generar su Ficha de Alta y el Mandato SEPA automáticamente.</p>
+        </header>
+
+        <main>
+            <form id="client-form" novalidate>
+                <!-- Sección 1: Datos Fiscales -->
+                <div class="form-section">
+                    <h2>1. Datos Fiscales (Empresa / Deudor)</h2>
+                    <div class="form-grid">
+                        <div class="form-group grid-full-width">
+                            <label for="nombre_empresa">Nombre de la Empresa (Titular de la cuenta)</label>
+                            <input type="text" id="nombre_empresa" name="nombre_empresa" required placeholder="Nombre fiscal completo">
+                        </div>
+                        <div class="form-group">
+                            <label for="cif">CIF / NIF</label>
+                            <input type="text" id="cif" name="cif" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono_fiscal">Teléfono</label>
+                            <input type="tel" id="telefono_fiscal" name="telefono_fiscal" required>
+                        </div>
+                        <div class="form-group grid-full-width">
+                            <label for="direccion">Dirección Fiscal</label>
+                            <input type="text" id="direccion" name="direccion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="codigo_postal">Código Postal</label>
+                            <input type="text" id="codigo_postal" name="codigo_postal" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="poblacion">Población</label>
+                            <input type="text" id="poblacion" name="poblacion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="provincia">Provincia</label>
+                            <input type="text" id="provincia" name="provincia" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pais">País</label>
+                            <input type="text" id="pais" name="pais" required value="España">
+                        </div>
+                        <div class="form-group grid-full-width">
+                            <label for="email_fiscal">E-Mail para Facturación electrónica</label>
+                            <input type="email" id="email_fiscal" name="email_fiscal" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 2: Dirección de Entrega -->
+                <div class="form-section">
+                    <h2>2. Dirección de Entrega (Opcional)</h2>
+                    <p class="subtitle">Rellenar solo si es diferente a la dirección fiscal.</p>
+                    <div class="form-grid">
+                        <div class="form-group grid-full-width">
+                            <label for="direccion_entrega">Dirección de Entrega</label>
+                            <input type="text" id="direccion_entrega" name="direccion_entrega">
+                        </div>
+                        <div class="form-group">
+                            <label for="cp_entrega">Código Postal</label>
+                            <input type="text" id="cp_entrega" name="cp_entrega">
+                        </div>
+                        <div class="form-group">
+                            <label for="poblacion_entrega">Población</label>
+                            <input type="text" id="poblacion_entrega" name="poblacion_entrega">
+                        </div>
+                        <div class="form-group">
+                            <label for="provincia_entrega">Provincia</label>
+                            <input type="text" id="provincia_entrega" name="provincia_entrega">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 3: Contactos -->
+                <div class="form-section">
+                    <h2>3. Personas de Contacto</h2>
+                    
+                    <h3>Departamento de Contabilidad (Obligatorio)</h3>
+                    <div class="form-grid">
+                        <div class="form-group"><label>Nombre</label><input type="text" name="nombre_contabilidad" required></div>
+                        <div class="form-group"><label>Apellidos</label><input type="text" name="apellidos_contabilidad" required></div>
+                        <div class="form-group"><label>E-Mail</label><input type="email" name="email_contabilidad" required></div>
+                        <div class="form-group"><label>Teléfono</label><input type="tel" name="telefono_contabilidad" required></div>
+                    </div>
+
+                    <h3 style="margin-top: 1.5rem;">Departamento de Compras (Opcional)</h3>
+                    <div class="form-grid">
+                        <div class="form-group"><label>Nombre</label><input type="text" name="nombre_compras"></div>
+                        <div class="form-group"><label>Apellidos</label><input type="text" name="apellidos_compras"></div>
+                        <div class="form-group"><label>E-Mail</label><input type="email" name="email_compras"></div>
+                        <div class="form-group"><label>Teléfono</label><input type="tel" name="telefono_compras"></div>
+                    </div>
+                </div>
+
+                <!-- Sección 4: Datos Bancarios -->
+                <div class="form-section">
+                    <h2>4. Datos Bancarios (Para Mandato SEPA)</h2>
+                    <div class="form-grid">
+                        <div class="form-group grid-full-width">
+                            <label for="iban">Número de cuenta - IBAN (Obligatorio)</label>
+                            <input type="text" id="iban" name="iban" placeholder="ES00 0000 0000 00 0000000000" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="swift">Swift BIC</label>
+                            <input type="text" id="swift" name="swift">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo_pago_sepa">Tipo de pago</label>
+                            <select id="tipo_pago_sepa" name="tipo_pago_sepa">
+                                <option value="recurrente" selected>Pago recurrente (Habitual)</option>
+                                <option value="unico">Pago único</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="form-feedback"></div>
+
+                <button type="submit" class="submit-button">Generar Documentos y Finalizar</button>
+            </form>
+        </main>
+        
+        <footer>
+            <p>&copy; <span id="year"></span> CV Tools S.L.</p>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
